@@ -19,7 +19,7 @@ class Template:
         pythonMinorVersion: int = defaultPyMinorVersion,
     ) -> str:
         return dedent(
-            f"""
+            f"""\
                 [project]
                 name = "{name}"
                 version = "0.0.1"
@@ -80,7 +80,13 @@ def init_py_project(argv: Optional[Sequence[str]] = None) -> int:
     if not os.path.isfile(Template.pyprojectPath):
         logging.info(f"File '{Template.pyprojectPath}' does not exist, writing...")
         with open(Template.pyprojectPath, "w") as f:
-            f.write(Template.pyproject(name=args.name))
+            f.write(
+                Template.pyproject(
+                    name=args.name,
+                    pythonVersion=args.major,
+                    pythonMinorVersion=args.minor,
+                )
+            )
             logging.info("Written.")
     else:
         logging.info(f"File '{Template.pyprojectPath}' already exists, skipping.")
