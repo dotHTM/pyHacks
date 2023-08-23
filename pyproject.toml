@@ -1,7 +1,7 @@
 [project]
 name = "pyHacks"
 version = "0.0.1"
-dependencies = []
+dependencies = ["psutil"]
 
 
 [build-system]
@@ -12,8 +12,11 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [project.scripts]
-init_subl_project = "init.subl:initProject_main"
-init_py_project = "init.py:init_py_project"
+init-subl-project = "init.subl:initProject_main"
+init-py-project = "init.py:init_py_project"
+
+pid-finder = "monitor.system:pidfinder_main"
+pid-killer = "monitor.system:pidKiller_main"
 
 
 [tool.black]

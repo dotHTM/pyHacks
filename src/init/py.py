@@ -5,6 +5,8 @@ from textwrap import dedent
 
 from typing import Optional, Sequence
 
+from Shared import loggingArgs
+
 
 class Template:
     defaultPyVersion = 3
