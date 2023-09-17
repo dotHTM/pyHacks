@@ -7,6 +7,8 @@ from typing import Optional, Sequence
 
 from pyHacks.Shared import loggingArgs
 
+from pyHacks.Shared import loggingArgs
+
 
 class Template:
     defaultPyVersion = 3
@@ -70,27 +72,21 @@ def init_py_project(argv: Optional[Sequence[str]] = None) -> int:
 
     parser.add_argument("--source", type=str, default=Template.sourceDirectory)
 
-    outputGroup = parser.add_argument_group("Output")
-    outputGroup.add_argument("--debug", "-d", action="count")
-    outputGroup.add_argument("--verbose", "-v", action="count")
-
-    args = parser.parse_args(argv)
-    if args.debug:
-        logging.basicConfig(level=logging.DEBUG)
-    elif args.verbose:
-        logging.basicConfig(level=logging.INFO)
+    args = loggingArgs(parser)
 
     workingDirectory = os.path.abspath("./")
-    print(os.path.basename(workingDirectory), args.name)
+
     if not args.name:
         args.name = os.path.basename(workingDirectory)
+        logging.info(
+            f"No args.name specified. Detecting from working directory. {args.name}"
+        )
     elif os.path.basename(workingDirectory) != args.name:
         os.makedirs(args.name, exist_ok=True)
         workingDirectory += "/" + args.name
-
-    print(os.path.basename(workingDirectory), args.name)
-
-    exit()
+        logging.info(
+            f"Working directory was not named '{args.name}', so created and updated wd. {workingDirectory}"
+        )
 
     if not os.path.isfile(Template.pyprojectPath):
         logging.info(f"File '{Template.pyprojectPath}' does not exist, writing...")

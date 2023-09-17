@@ -6,6 +6,8 @@ from subprocess import run
 from pprint import pp
 from typing import Optional, Sequence
 
+from pyHacks.Shared import loggingArgs
+
 
 class Template:
     workspaceExtention: str = "sublime-workspace"
@@ -76,11 +78,7 @@ def initProject_main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("name", type=str, nargs="?")
     parser.add_argument("--debug", "-d", action="count")
     parser.add_argument("--verbose", "-v", action="count")
-    args = parser.parse_args(argv)
-    if args.debug:
-        logging.basicConfig(level=logging.DEBUG)
-    elif args.verbose:
-        logging.basicConfig(level=logging.INFO)
+    args = loggingArgs(parser)
 
     if not args.name:
         workingDirectory = os.path.abspath("./")
