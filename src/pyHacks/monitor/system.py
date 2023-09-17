@@ -7,7 +7,7 @@ from typing import Optional, Sequence
 import psutil
 
 import subprocess
-from Shared import loggingArgs
+from pyHacks.Shared import loggingArgs
 from time import sleep
 
 
@@ -137,9 +137,10 @@ def pidKiller_main(argv: Optional[Sequence[str]] = None) -> int:
         try:
             logging.debug(
                 dedent(
-                    f"""\
+                    f"""
                         ### System ###
-                        memory:      {psutil.virtual_memory()}
+                        cpu:         {psutil.cpu_percent()}
+                        memory:      {psutil.virtual_memory().percent}
                         
                         ### Process ###
                         pid:         {foundPs.pid}

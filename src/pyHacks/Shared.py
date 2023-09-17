@@ -5,8 +5,8 @@ import logging
 
 
 class Defaults:
-    detailFormat = "[ %(asctime)s ] %{levelname}s : %(message)s"
-    midFormat = "%{levelname}s : %(message)s"
+    detailFormat = "[ %(asctime)s ] %(levelname)s : %(message)s"
+    midFormat = "%(levelname)s : %(message)s"
     basicFormat = "%(message)s"
 
 

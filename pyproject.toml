@@ -12,11 +12,15 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [project.scripts]
-init-subl-project = "init.subl:initProject_main"
-init-py-project = "init.py:init_py_project"
+init-subl-project = "pyHacks.init.subl:initProject_main"
+init-py-project = "pyHacks.init.py:init_py_project"
 
-pid-finder = "monitor.system:pidfinder_main"
-pid-killer = "monitor.system:pidKiller_main"
+pid-finder = "pyHacks.monitor.system:pidfinder_main"
+pid-killer = "pyHacks.monitor.system:pidKiller_main"
+
+setScreenSaver = "pyHacks.Settings:setScreenSaver_main"
+
+playdateify_mp3 = "pyHacks.Convert:playdateify_mp3_main"
 
 
 [tool.black]

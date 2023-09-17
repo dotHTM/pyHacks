@@ -50,7 +50,7 @@ def initProject(name: str):
     gitPreExists = False
     if not os.path.isdir(".git"):
         logging.info("Initializing git.")
-        run("git init")
+        run(["git", "init"])
         gitPreExists = True
     else:  # git already exists, then ignore the project file to avoid poluting in projects where others don't use subl
         logging.info("Existing git, adding project to ignore list.")
