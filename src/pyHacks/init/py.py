@@ -114,6 +114,7 @@ def init_py_project(argv: Optional[Sequence[str]] = None) -> int:
     )
     logging.info(f"Creating source directory at '{sourceAbsPath}'.")
     os.makedirs(sourceAbsPath, exist_ok=True)
+    logging.info(f"touching source init at '{sourceInitFileAbsPath}'.")
     Path(sourceInitFileAbsPath).touch()
 
     return 0
