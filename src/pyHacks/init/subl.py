@@ -76,8 +76,6 @@ def initProject_main(argv: Optional[Sequence[str]] = None) -> int:
 
     parser = argparse.ArgumentParser()
     parser.add_argument("name", type=str, nargs="?")
-    parser.add_argument("--debug", "-d", action="count")
-    parser.add_argument("--verbose", "-v", action="count")
     args = loggingArgs(parser)
 
     if not args.name:

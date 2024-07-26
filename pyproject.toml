@@ -22,6 +22,7 @@ setScreenSaver = "pyHacks.Settings:setScreenSaver_main"
 
 playdateify_mp3 = "pyHacks.Convert:playdateify_mp3_main"
 
+pycharm = "pyHacks.alias.pycharm:main"
 
 [tool.black]
 line-length = 88

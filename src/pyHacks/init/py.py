@@ -44,7 +44,7 @@ class Template:
 
 
                 [tool.black]
-                line-length = 88
+                line-length = 79
                 target-version = ['py{pythonVersion}{pythonMinorVersion}']
                 include = '\\.pyi?$'
                 extend-exclude = '''
