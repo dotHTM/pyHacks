@@ -8,6 +8,7 @@ from typing import Optional, Sequence
 from pyHacks.Shared import loggingArgs
 
 from pyHacks.Shared import loggingArgs
+from pathlib import Path
 
 
 class Template:
@@ -23,6 +24,7 @@ class Template:
         sourceDirectory: str = sourceDirectory,
         pythonVersion: int = defaultPyVersion,
         pythonMinorVersion: int = defaultPyMinorVersion,
+        source: str = sourceDirectory,
     ) -> str:
         return dedent(
             f"""\
@@ -37,7 +39,7 @@ class Template:
                 build-backend = "setuptools.build_meta"
 
                 [tool.setuptools.packages.find]
-                where = ["{sourceDirectory}"]
+                where = ["{source}"]
 
                 [project.scripts]
                 # commandLineName = "module.cli:main"
@@ -88,20 +90,31 @@ def init_py_project(argv: Optional[Sequence[str]] = None) -> int:
             f"Working directory was not named '{args.name}', so created and updated wd. {workingDirectory}"
         )
 
-    if not os.path.isfile(Template.pyprojectPath):
-        logging.info(f"File '{Template.pyprojectPath}' does not exist, writing...")
-        with open(Template.pyprojectPath, "w") as f:
+    projectPath = os.path.join(workingDirectory, Template.pyprojectPath)
+
+    if not os.path.isfile(projectPath):
+        logging.info(f"File '{projectPath}' does not exist, writing...")
+        with open(projectPath, "w") as f:
+            logging.info("writing pyproject template")
             f.write(
                 Template.pyproject(
                     name=args.name,
                     pythonVersion=args.major,
                     pythonMinorVersion=args.minor,
+                    source=args.source,
                 )
             )
             logging.info("Written.")
     else:
-        logging.info(f"File '{Template.pyprojectPath}' already exists, skipping.")
+        logging.info(f"File '{projectPath}' already exists, skipping.")
 
-    os.makedirs(args.source, exist_ok=True)
+    sourceAbsPath = os.path.join(workingDirectory, args.source, args.name)
+    sourceInitFileAbsPath = os.path.join(
+        workingDirectory, args.source, args.name, "__init__.py"
+    )
+    logging.info(f"Creating source directory at '{sourceAbsPath}'.")
+    os.makedirs(sourceAbsPath, exist_ok=True)
+    logging.info(f"touching source init at '{sourceInitFileAbsPath}'.")
+    Path(sourceInitFileAbsPath).touch()
 
     return 0

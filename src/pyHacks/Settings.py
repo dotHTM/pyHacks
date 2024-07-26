@@ -87,13 +87,22 @@ def setScreenSaver_main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--style", type=str, choices=Constants.iLifeSlideshows)
     parser.add_argument("--imageFolder", type=str)
+    parser.add_argument("--now", "-n", action="store_true")
     args = parser.parse_args(argv)
 
     if args.style:
         setScreenSaverStyle(args.style)
     if args.imageFolder:
         setScreenSaverImageFolder(args.imageFolder)
-    if any([args.style, args.imageFolder]):
+    if any([args.style, args.imageFolder, args.now]):
         kill_cfprefsd()
+    if args.now:
+        run(
+            [
+                "open",
+                "/System/Library/CoreServices/ScreenSaverEngine.app",
+                "--background",
+            ]
+        )
 
     return 0
