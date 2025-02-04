@@ -1,6 +1,6 @@
 [project]
 name = "pyHacks"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = ["psutil"]
 
 
@@ -23,6 +23,8 @@ setScreenSaver = "pyHacks.Settings:setScreenSaver_main"
 playdateify_mp3 = "pyHacks.Convert:playdateify_mp3_main"
 
 pycharm = "pyHacks.alias.pycharm:main"
+
+insomnia = "pyHacks.jobs.insomnia:main"
 
 [tool.black]
 line-length = 88
