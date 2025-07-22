@@ -1,7 +1,8 @@
 [project]
 name = "pyHacks"
 version = "0.1.0"
-dependencies = ["psutil"]
+dependencies = ["psutil",
+"virtualenv"]
 
 
 [build-system]

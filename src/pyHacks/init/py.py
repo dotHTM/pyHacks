@@ -5,6 +5,8 @@ from textwrap import dedent
 
 from typing import Optional, Sequence
 
+from subprocess import run
+
 from pyHacks.Shared import loggingArgs
 
 from pyHacks.Shared import loggingArgs
@@ -47,7 +49,7 @@ class Template:
 
                 [tool.black]
                 line-length = 79
-                target-version = ['py{pythonVersion}{pythonMinorVersion}']
+                #target-version = ['py{pythonVersion}{pythonMinorVersion}']
                 include = '\\.pyi?$'
                 extend-exclude = '''
                 # A regex preceded with ^/ will apply only to files and directories
@@ -56,24 +58,35 @@ class Template:
                 '''
 
                 [tool.pyright]
-                pythonVersion = '{pythonVersion}.{pythonMinorVersion}'
-                venvPath = ''
-                venv = ''
+                #pythonVersion = '{pythonVersion}.{pythonMinorVersion}'
+                venvPath = '.'
+                venv = '.venv'
             """
         )
+
+
 
 
 def init_py_project(argv: Optional[Sequence[str]] = None) -> int:
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("name", type=str, nargs="?")
+    
+    ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+    project_group=parser.add_argument_group("Project Settings")
+    
+    project_group.add_argument("name", type=str, nargs="?")
+    project_group.add_argument("--source", type=str, default=Template.sourceDirectory)
+    
+    project_group.add_argument("--major", type=int, default=Template.defaultPyVersion)
+    project_group.add_argument("--minor", type=int, default=Template.defaultPyMinorVersion)
 
-    parser.add_argument("--major", type=int, default=Template.defaultPyVersion)
-    parser.add_argument("--minor", type=int, default=Template.defaultPyMinorVersion)
-
-    parser.add_argument("--source", type=str, default=Template.sourceDirectory)
-
+    ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+    venv_group = parser.add_argument_group('Virtual Env')
+    
+    venv_group.add_argument("--no-venv", action="store_true")
+    venv_group.add_argument("--python", type=str)
+    
     args = loggingArgs(parser)
 
     workingDirectory = os.path.abspath("./")
@@ -89,7 +102,7 @@ def init_py_project(argv: Optional[Sequence[str]] = None) -> int:
         logging.info(
             f"Working directory was not named '{args.name}', so created and updated wd. {workingDirectory}"
         )
-
+    
     projectPath = os.path.join(workingDirectory, Template.pyprojectPath)
 
     if not os.path.isfile(projectPath):
@@ -116,5 +129,12 @@ def init_py_project(argv: Optional[Sequence[str]] = None) -> int:
     os.makedirs(sourceAbsPath, exist_ok=True)
     logging.info(f"touching source init at '{sourceInitFileAbsPath}'.")
     Path(sourceInitFileAbsPath).touch()
+
+    if not args.no_venv:
+        run([
+        "virtualenv",
+        *("--python", args.python),
+        ".venv",
+        ])
 
     return 0
